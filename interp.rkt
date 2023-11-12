@@ -73,23 +73,6 @@
                  [string-v (s) (cons s (transform (cdr args)))]
                  [closure-v (args body env) (error 'interp "transform invalido")])))
 
-
-
-(define (rec->aux bindings body env)
-  (cond
-    [(empty? bindings) body]
-    [else
-     (type-case Binding bindings
-       [binding (id val)
-                (let* ([contenedor (box (num-v 1729))] ; ; Paso 1
-                       [ambiente (cons-env id contenedor env)]
-                       [valor (interp val ambiente)])
-                  (begin
-                    (set-box! contenedor valor) ; ; Paso 2
-                    ambiente
-                    (rec->aux (cdr bindings) body env))
-                  )])]))
-
 ;; closure-params :: symbol x args x Env -> Env
 (define (closure-params vars args env)
   (if (equal? (length vars) (length args))
@@ -97,16 +80,6 @@
           env
           (cons-env (car vars) (interp (car args) env) (closure-params (cdr vars) (cdr args) env)))
       (error 'interp "Numero de argumentos y parametros distinto")))
-
-;;greedy-eval :: CFSBAE-Val -> Val
-(define (greedy-eval args)
-  (if (empty? args)
-      '()
-      (type-case RCFSBAE-Val (car args)
-        [num-v (n) (cons n (greedy-eval (cdr args)))]
-        [bool-v (b) (cons b (greedy-eval (cdr args)))]
-        [string-v (s) (cons s (greedy-eval (cdr args)))]
-        [closure-v (args body env) error 'interp "error de sintaxis"] )))
 
 ;; symbol x Env -> RCFSBAE-Val
 
