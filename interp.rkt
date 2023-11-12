@@ -36,9 +36,22 @@
                       (interp then-e env)
                       (interp else-e env))]
           [else (error 'interp "La condicion del if debe ser un booleano")])]
-    [rec (bindings body) (interp (rec->aux bindings body))]))
+    [rec (bindings body) (interp (rec->aux bindings body env))]))
 
-
+(define (rec->aux bindings body env)
+  (cond
+    [(empty? bindings) body]
+    [else
+     (type-case Binding bindings
+       [binding (id val)
+                (let* ([contenedor (box (num-v 1729))] ; ; Paso 1
+                       [ambiente (cons-env id contenedor env)]
+                       [valor (interp val ambiente)])
+                  (begin
+                    (set-box! contenedor valor) ; ; Paso 2
+                    ambiente
+                    (rec->aux (cdr bindings) body env))
+                  )])]))
 
 ;; closure-params :: symbol x args x Env -> Env
 (define (closure-params vars args env)
