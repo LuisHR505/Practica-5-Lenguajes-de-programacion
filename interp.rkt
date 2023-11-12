@@ -24,7 +24,7 @@
     [id (i) (lookup id env)]
     [bool (b) (bool-v b)]
     [strinG (s) (string-v s)]
-    [op (f args) (interp (parse (apply f (greedy-eval (map (lambda (e) (interp e env)) args)))) mt-env)]
+    [op (f args) (interp (parse (apply f (transform (map (lambda (e) (interp e env)) args)))) env)]
     [fun (param body) (closure-v param body env)]
     [app (fun-e args)(let ([fun-val (interp fun-e env)])
                          (interp (closure-v-body fun-val)
@@ -36,7 +36,44 @@
                       (interp then-e env)
                       (interp else-e env))]
           [else (error 'interp "La condicion del if debe ser un booleano")])]
-    [rec (bindings body) (interp (rec->aux bindings body env))]))
+    [rec (bindings body) (let* ([environment (create-mt-env bindings env)]) (interp body environment))]))
+
+(define (create-mt-env bindings env)
+  (if (empty? bindings)
+      env
+      (type-case RCFSBAE (binding-value (car bindings))
+        [fun (p a)
+             (create-mt-env (cdr bindings)
+                            (cyclically-bind-and-interp
+                             (binding-id (car bindings))
+                             (binding-value (car bindings))
+                             env))]
+        [else
+         (create-mt-env
+          (cdr bindings)
+          (cons-env (binding-id (car bindings))
+                    (interp (binding-value (car bindings)) env) env))])))
+
+
+(define (cyclically-bind-and-interp id value env)
+  (let* ([container (box (num-v 1729))]
+         [enviroment (rec-cons-env id container env)]
+         [val (interp value enviroment)])
+    (begin
+      (set-box! container val)
+      enviroment)))
+
+
+(define (transform args)
+  (if (empty? args)
+      '()
+      (type-case RCFSBAE-Val (car args)
+                 [num-v (n) (cons n (transform (cdr args)))]
+                 [bool-v (b) (cons b (transform (cdr args)))]
+                 [string-v (s) (cons s (transform (cdr args)))]
+                 [closure-v (args body env) (error 'interp "transform invalido")])))
+
+
 
 (define (rec->aux bindings body env)
   (cond
