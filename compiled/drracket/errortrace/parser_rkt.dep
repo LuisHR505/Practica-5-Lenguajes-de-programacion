@@ -1,1 +1,0 @@
-("8.10" ta6le ("f6ee822cbad387cea711fd56d20ef1bd99e99351" . "8cc1d27237cd62eb9a64c7af0d0a02f3437aec18") #"/home/julianrosas/Documentos/lenguajes/Practica-5-Lenguajes-de-programacion/grammars.rkt" (collects #"drracket" #"private" #"drracket-errortrace-key.rkt") (collects #"plai" #"lang" #"reader.rkt") (collects #"plai" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))
