@@ -16,7 +16,7 @@
         [rst (rest s-exp)])
     (case fst
       [(fun) (fun (no-rep (first rst) '{}) (parse (second rst)))]
-      [(+ - / * min max abd ir < > <= >= =)
+      [(+ - / * min max abd ir < > <= >= = or and )
        (if (empty? rst)
            (error 'parse (string-append "La operación " (symbol->string fst)
                                         " debe ser ejecutada con mas de 0 argumentos."))
@@ -59,8 +59,25 @@
   (case sym
     ;; Aquí van los casos especiales que no son evaluados directamente de Racket
     [(string?) (string)]
+    [(str?) (eval string?)]
+    [(str-length) (eval string-length)]
+    [(or) (eval oR)]
+    [(and) (eval anD)]
     [else (eval sym)]
   ))
+
+(define (anD listaB)
+  (if(empty? listaB)
+     #t
+     (and (car listaB) (anD (cdr listaB)))
+     ))
+
+(define (oR listaB)
+  (if(empty? listaB)
+     #f
+     (or (car listaB) (oR (cdr listaB)))
+     ))
+
 
 (define (list-to-binding ls)
   (if (empty? ls)

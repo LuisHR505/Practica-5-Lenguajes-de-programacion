@@ -82,10 +82,10 @@
       (error 'interp "Numero de argumentos y parametros distinto")))
 
 ;; symbol x Env -> RCFSBAE-Val
-
+;; (symbol->string sub-id)
 (define (lookup sub-id env)
   (type-case Env env
-    [mt-env ( ) (error 'lookup (string-append "interp: Variable libre " (symbol->string sub-id)))]
+    [mt-env ( ) (error 'lookup (string-append "interp: Variable libre "))]
     
     [cons-env (id value rest)(if (equal? id sub-id)
                                  value
@@ -96,6 +96,7 @@
                                  (lookup sub-id rest)
                                  )]
     ))
+
 
 ;; ambiente de prueba
 ;;(rec-cons-env 'x (box (num-v 10)) (mt-env))

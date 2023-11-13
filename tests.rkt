@@ -35,7 +35,7 @@
 (test (prueba '{modulo 3 2}) (num-v 1)) ;;si pasa
 (test (prueba '{sub1 3}) (num-v 2)) ;;si pasa
 (test (prueba '{sub1 (add1 (expt 3 3))}) (num-v 27)) ;;si pasa
-(test (prueba '{str-length "Hello"}) (num-v 5)) ;;no pasa
+(test (prueba '{str-length "Hello"}) (num-v 5)) ;;si pasa
 (test (prueba '{> 10 9}) (bool-v #t)) ;;si pasa
 (test (prueba '{> 1 2}) (bool-v #f)) ;;si pasa
 (test (prueba '{> 10 9 8 7 6 5 4 3 2 1}) (bool-v #t)) ;;si pasa
@@ -44,7 +44,7 @@
 (test (prueba '{= 10 10}) (bool-v #t)) ;;si pasa
 (test (prueba '{zero? 10}) (bool-v #f)) ;;si pasa
 (test (prueba '{zero? 0}) (bool-v #t)) ;;si pasa
-(test (prueba '{num? 10}) (bool-v #t)) ;;no pasa
+(test (prueba '{num? 10}) (bool-v #t)) ;;no pasa (ERROR EN EL INTERP)
 (test (prueba '{bool? 10}) (bool-v #f));;si pasa
 (test (prueba '{bool? {and {zero? {add1 1}}
                            {num? "Hello"}}}) (bool-v #t)) ;;no pasa
