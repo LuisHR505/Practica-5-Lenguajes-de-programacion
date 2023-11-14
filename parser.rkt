@@ -66,16 +66,24 @@
     [else (eval sym)]
   ))
 
-(define (anD listaB)
+(define (anD . args)
+   (anD1 args))
+
+(define (anD1 listaB)
   (if(empty? listaB)
      #t
-     (and (car listaB) (anD (cdr listaB)))
+     (and (car listaB) (anD1 (cdr listaB)))
      ))
 
-(define (oR listaB)
+
+(define (oR . args)
+   (oR1 args))
+
+
+(define (oR1 listaB)
   (if(empty? listaB)
      #f
-     (or (car listaB) (oR (cdr listaB)))
+     (or (car listaB) (oR1 (cdr listaB)))
      ))
 
 
