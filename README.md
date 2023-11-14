@@ -1,2 +1,4 @@
 # Practica-5-Lenguajes-de-programacion
-salu3
+Hernandez Rosas Luis Ernesto
+Emiliano Lopez Prado
+Julian Rosas Scull
