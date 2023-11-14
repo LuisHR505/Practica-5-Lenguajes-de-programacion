@@ -24,7 +24,10 @@
     [id (i) (lookup id env)]
     [bool (b) (bool-v b)]
     [strinG (s) (string-v s)]
-    [op (f args) (interp (parse (apply f (transform (map (lambda (e) (interp e env)) args)))) env)]
+    [op (f args) (if (= (length args) 1)
+                     (interp (parse (f (car (transform (map (lambda (e) (interp e env)) args))))) env)
+                     (interp (parse (apply f (transform (map (lambda (e) (interp e env)) args)))) env)
+                     )]
     [fun (param body) (closure-v param body env)]
     [app (fun-e args)(let ([fun-val (interp fun-e env)])
                          (interp (closure-v-body fun-val)

@@ -63,6 +63,8 @@
     [(str-length) (eval string-length)]
     [(or) (eval oR)]
     [(and) (eval anD)]
+    [(bool?) (eval boolean?)]
+    [(num?) (eval number?)]
     [else (eval sym)]
   ))
 

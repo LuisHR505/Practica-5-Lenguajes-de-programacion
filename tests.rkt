@@ -44,14 +44,14 @@
 (test (prueba '{= 10 10}) (bool-v #t)) ;;si pasa
 (test (prueba '{zero? 10}) (bool-v #f)) ;;si pasa
 (test (prueba '{zero? 0}) (bool-v #t)) ;;si pasa
-(test (prueba '{num? 10}) (bool-v #t)) ;;no pasa (ERROR EN EL INTERP)
+(test (prueba '{num? 10}) (bool-v #t)) ;;si pasa
 (test (prueba '{bool? 10}) (bool-v #f));;si pasa
 (test (prueba '{bool? {and {zero? {add1 1}}
-                           {num? "Hello"}}}) (bool-v #t)) ;;no pasa
+                           {num? "Hello"}}}) (bool-v #t)) ;;si pasa
 (test (prueba '{or {zero? {+ -1 1}}
                    {num? {sub1 0}}
-                   {bool? {str? "Hi"}}}) (bool-v #t)) ;; no pasa
-(test/exn (prueba 'a) "interp: Variable libre a") ;;no pasa
+                   {bool? {str? "Hi"}}}) (bool-v #t)) ;; si pasa
+(test/exn (prueba 'a) "interp: Variable libre a") ;;si pasa (pero solo hay un ligero error en el string)
 (test (prueba '{rec {[x 2] [y 3]} {+ x 3 y}}) (num-v 8)) ;; no pasa
 (test (prueba '{rec {{x 5} {y 1}} {+ x y}}) (num-v 6)) ;; no pasa
 (test (prueba '{rec {{x 5} {y {+ x 1}}} {+ x y}}) (num-v 11)) ;; no pasa
